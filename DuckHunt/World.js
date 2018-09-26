@@ -1,3 +1,14 @@
+var socket;
+var kurX;
+var kurY;
+
+function inData(data){
+  kurX=data.x;
+  kurY=data.y;
+  translate(kurX,kurY);
+
+}
+
 class World {
   constructor() {
     this.birds = [];
@@ -14,14 +25,19 @@ class World {
   }
 
   begin() {
+    socket=io.connect('http://192.168.97.22:3000');
+    socket.on('cords', inData);
+
+    socket.on('cords', inData);
     this.addBird().changeAnimation("default");
     this.spawnBirdInterval = setTimeout(this.spawnBird.bind(this), this.spawnBirdTimer);
     this.changeDirectionInverval = setTimeout(this.changeDirection.bind(this), this.changeDirTimer);
   }
 
+
   update() {
     drawSprites();
-
+    
     //Handle the movement and drawing of all birds
     for (var i = 0; i < allSprites.length; i++) {
       if(allSprites[i].getAnimationLabel()==="kill" || allSprites[i].getAnimationLabel()==="shot"){
@@ -51,8 +67,18 @@ class World {
     this.textHandler();
   }
 
+  
+  
   cursorHandler(i) {
-    loadJSON("/getcords",function(data){console.log(data[0])});
+    
+    //console.log(mouseX+","+mouseY);
+    let data={
+      x:mouseX,
+      y:mouseY
+    }
+    socket.emit('cords',data);
+
+
     if (mouseIsPressed || this.clicked) {
         if (dist( allSprites[i].position.x,  allSprites[i].position.y, mouseX, mouseY) <= allSprites[i].width &&
           allSprites[i].getAnimationLabel()==="default"){
@@ -62,6 +88,18 @@ class World {
           setTimeout(function(){allSprites[i].changeAnimation("kill");},300);
         }
     }
+
+
+
+    if (mouseIsPressed || this.clicked) {
+      if (dist( allSprites[i].position.x,  allSprites[i].position.y, kurX, kurY) <= allSprites[i].width &&
+        allSprites[i].getAnimationLabel()==="default"){
+        allSprites[i].setVelocity(0,0);
+        allSprites[i].changeAnimation("shot");
+        this.score++;
+        setTimeout(function(){allSprites[i].changeAnimation("kill");},300);
+      }
+  }
 }
 
 

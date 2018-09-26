@@ -1,36 +1,45 @@
 var express = require('express')
 var app = express()
- /*
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
-*/ 
+
 var cords=[0,0,0];
 var server=app.listen(3000,listening);
 
-app.get('/insert/:xxx/:yyy', function (req, res) {
- var data =req.params;
- // res.send('Hello World'+Number(data.longt)+','+Number(data.lat)+'')
- console.log("Yas!")
 
- cords[0]=Number(data.xxx);
- cords[1]=Number(data.yyy);
- console.log('Hello World'+cords[0]+','+cords[1]+'');
-// res.send(cords);
- console.log(Number(cords[0]));
-  });
+///socket
+var socket = require ('socket.io');
+
+var io=socket(server);
+
+io.sockets.on('connection', newConnection);
+
+function newConnection(socket){
+  console.log('new connection:'+socket.id);
+  socket.on('cords',msg);
+  function msg(data){
+    socket.broadcast.emit('cords',data);
+    console.log(data);
+  }
+}
 
 
-  app.get('/getcords', function (req, res) {
+
+
+app.get('/gun', function (req, res) {
   
-    res.send(cords);
-    
-     });
+  res.send(cords);
+  
+});
+
+
+
+
 
 function listening(){
 
   console.log("Listening...")
 
 }
+
+
 
 app.use(express.static("DuckHunt"));
