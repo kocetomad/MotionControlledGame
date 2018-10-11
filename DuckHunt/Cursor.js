@@ -14,7 +14,7 @@ class Cursor{
 
   begin(){
     //Socket connection
-    this.socket=io.connect('http://172.20.10.12:3000');
+    this.socket=io.connect('http://192.168.1.128:3000/');
     this.socket.on('dataIn', function (data){
       serverX=data.x;
       serverY=data.y;
