@@ -14,7 +14,7 @@ class Cursor{
 
   begin(){
     //Socket connection
-    this.socket=io.connect('http://192.168.1.128:3000/');
+    this.socket=io.connect('http://127.0.0:3000/');
     this.socket.on('dataIn', function (data){
       serverX=data.x;
       serverY=data.y;
@@ -28,9 +28,13 @@ class Cursor{
     if(!(this.positionX+serverX<0 ||
        this.positionX+serverX>width ||
        this.positionY+serverY<0 ||
-       this.positionY+serverY>height)){
+       this.positionY+serverY>height) && this.socket.connected){ //Warning
       this.positionX+=serverX;
       this.positionY+=serverY;
+    }else if (this.socket.disconnected) {
+      this.positionX=mouseX;
+      this.positionY=mouseY;
+      serverShot = mouseIsPressed;
     }
 
     //Draw the cursor
