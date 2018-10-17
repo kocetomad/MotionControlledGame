@@ -19,24 +19,18 @@ function newConnection(socket){
     data.x=Number(curData[0]);
     data.y=Number(curData[1]);
     data.shot=curData[2];
-    // if(curData[2]){
-    //  data.shot=true;
-    // }
-    // else if(!curData[2]){
-    //   data.shot=false;
-    // }
     io.sockets.emit('dataIn',data);
     // socket.broadcast.emit('dataIn',data);
     console.log(data);
   }
-  
+
 }
 
 
 // app.get('/gun', function (req, res) {
-  
+
 //   res.send(cords);
-  
+
 // });
 
 app.use(express.static("DuckHunt"));
@@ -53,7 +47,7 @@ wss.on('connection', function connection(ws) {
     curData=JSON.parse(message);
     //console.log(curData);
     // console.log(curData[2]);
-    
+
   });
 
   ws.send('something');
