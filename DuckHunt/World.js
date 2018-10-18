@@ -2,6 +2,7 @@ class World {
   constructor(cursor , bird_animations , bck) {
     this.cursor=cursor;
     this.bck=bck;
+    this.user_name;
     this.bird_animations=bird_animations;
     this.lifes=5;
     this.dirX = [0];

@@ -3,7 +3,6 @@ let bck;
 let menu;
 let cursor;
 let backgroundColor=[0,127,255];
-
 function preload(){
   cursor=new Cursor(loadImage("assets/cursor.png"));
   bck=new Background(loadAnimation("assets/animations/sprite_00.png","assets/animations/sprite_01.png","assets/animations/sprite_02.png","assets/animations/sprite_02.png",
